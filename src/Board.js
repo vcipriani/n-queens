@@ -127,12 +127,22 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var sum = this.rows().reduce(function(previous, row) {
+        return previous + (row[majorDiagonalColumnIndexAtFirstRow++] || 0);
+      }, 0);
+
+      return sum > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var length = this.rows().length;
+      for (var i = -(length - 2); i < (length - 1); i++) {
+        if(this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -142,7 +152,7 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      
     },
 
     // test if any minor diagonals on this board contain conflicts
