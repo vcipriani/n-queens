@@ -127,9 +127,18 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      var sum = this.rows().reduce(function(previous, row) {
-        return previous + (row[majorDiagonalColumnIndexAtFirstRow++] || 0);
-      }, 0);
+      var currentRow = 0;
+      var currentCol = majorDiagonalColumnIndexAtFirstRow;
+
+      if (majorDiagonalColumnIndexAtFirstRow < 0 ) {
+        currentRow = Math.abs(majorDiagonalColumnIndexAtFirstRow);
+        currentCol = 0;
+      } 
+
+      var sum = 0;
+      while (this._isInBounds(currentRow, currentCol)) {
+        sum += this.rows()[currentRow++][currentCol++];
+      }
 
       return sum > 1;
     },
@@ -152,7 +161,8 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      
+      // if (min)
+
     },
 
     // test if any minor diagonals on this board contain conflicts
