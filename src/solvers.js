@@ -132,14 +132,13 @@ window.countNQueensSolutions = function(n) {
   if( n === 0 ) {
     return 1;
   }
-  var solutionBoards = [];
-  var solutionCount;
+  var solutionCount = 0;
   var placePieces = function(board, row) {
     if(row === n - 1) {
       for(var col = 0; col < n; col++) {
         board.togglePiece(row, col);
         if(!board.hasAnyQueensConflicts()) {
-          solutionBoards.push(board);
+          solutionCount++;
         }
         board.togglePiece(row, col);
       }
@@ -156,7 +155,6 @@ window.countNQueensSolutions = function(n) {
 
   var newBoard = new Board({n: n});
   placePieces(newBoard, 0);
-  solutionCount = solutionBoards.length;
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
