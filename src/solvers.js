@@ -161,3 +161,16 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+window.countNQueensBitwise = function(n) {
+  var ones = (1 << n) - 1;
+  var solutionCount = 0;
+  var navigateRows = function(left, right, col) {
+
+  };
+  navigateRows(0,0,0);
+  return solutionCount;
+
+
+}
