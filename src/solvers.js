@@ -167,10 +167,24 @@ window.countNQueensBitwise = function(n) {
   var ones = (1 << n) - 1;
   var solutionCount = 0;
   var navigateRows = function(left, right, col) {
+    if(col === ones) {
+      solutionCount++;
+    } else {
+      var openSlots = ~(left | right | col) & ones;
+      while (openSlots !== 0 ) {
+        var nextSlot = (openSlots  & -openSlots);
 
+        var nextCol = nextSlot | col;
+        var nextLeft = ((nextSlot | left) << 1) & ones;
+        var nextRight = ((nextSlot | right) >> 1) & ones;
+
+        navigateRows(nextLeft, nextRight, nextCol);
+        openSlots = openSlots ^ nextSlot;
+      }
+    }
   };
   navigateRows(0,0,0);
   return solutionCount;
 
 
-}
+};
