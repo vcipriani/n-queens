@@ -34,10 +34,25 @@ window.countNRooksSolutions = function(n) {
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  var newBoard = new Board({n: n});
-  var solutionBoard = findFirstSolution(newBoard, 0, {}, newBoard.hasAnyQueensConflicts);
-  solution = solutionBoard ? solutionBoard.rows() : (new Board({n: n})).rows();
+window.findNQueensSolution = function(n, oldWay) {
+  var solutionBoard;
+  if(!oldWay) {
+        solutionBoard = findNQueensBitwise(n);
+        solutionBoard = solutionBoard.map(val => _.range(5).map((_, index) => {
+            if(index === val) {
+                return 1;
+            }
+            return 0;
+          })
+        );
+
+        solutionBoard = new Board(solutionBoard);
+  } else {
+    var newBoard = new Board({n: n});
+    solutionBoard = findFirstSolution(newBoard, 0, {}, newBoard.hasAnyQueensConflicts);
+    
+  }
+  var solution = solutionBoard ? solutionBoard.rows() : (new Board({n: n})).rows();
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
@@ -145,6 +160,34 @@ window.countNQueensBitwise = function(n) {
   };
   navigateRows(0,0,0);
   return solutionCount;
+};
 
 
+window.findNQueensBitwise = function(n, left, right, col, soFar) {
+  var ones = (1 << n) - 1;
+  left = left || 0;
+  right = right || 0;
+  col = col || 0;
+  soFar = soFar || [];
+
+  if(col === ones) {
+    return soFar;    
+  } else {
+    var openSlots = ~(left | right | col) & ones;
+    while (openSlots !== 0 ) {
+      var nextSlot = (openSlots  & -openSlots);
+
+      var indexOfNext = Math.log2(nextSlot);
+      var nextCol = nextSlot | col;
+      var nextLeft = ((nextSlot | left) << 1) & ones;
+      var nextRight = ((nextSlot | right) >> 1) & ones;
+
+      var result = findNQueensBitwise(n, nextLeft, nextRight, nextCol, soFar.concat(indexOfNext));
+      if(result){
+        return result;
+      }
+      openSlots = openSlots ^ nextSlot;
+    }
+  }
+  return _.range(n).map( item => 0);
 };
