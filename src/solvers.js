@@ -92,7 +92,7 @@ window.countNRooksSolutions = function(n) {
 window.findNQueensSolution = function(n) {
 
   var solutionBoard;
-
+  var solution;
   var placePieces = function(board, row) {
     if(row === n - 1) {
       for(var col = 0; col < n; col++) {
@@ -111,9 +111,8 @@ window.findNQueensSolution = function(n) {
           if(solutionBoard) {
             break;
           }
-        } else {
-          board.togglePiece(row,col);
-        }
+        } 
+        board.togglePiece(row,col);
       }
     }
   };
