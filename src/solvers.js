@@ -133,28 +133,34 @@ window.countNQueensSolutions = function(n) {
     return 1;
   }
   var solutionCount = 0;
-  var placePieces = function(board, row) {
+  var placePieces = function(board, row, colsUsed) {
     if(row === n - 1) {
       for(var col = 0; col < n; col++) {
-        board.togglePiece(row, col);
-        if(!board.hasAnyQueensConflicts()) {
-          solutionCount++;
+        if( !(col in colsUsed)) {
+          board.togglePiece(row, col);
+          if(!board.hasAnyQueensConflicts()) {
+            solutionCount++;
+          }
+          board.togglePiece(row, col);
         }
-        board.togglePiece(row, col);
       }
     } else {
       for(var col = 0; col < n; col++) {
-        board.togglePiece(row,col);
-        if(!board.hasAnyQueensConflicts()) {
-          placePieces(board, row + 1);
-        } 
-        board.togglePiece(row,col);
+        if( !(col in colsUsed)) {
+          board.togglePiece(row,col);
+          colsUsed[col] = col;
+          if(!board.hasAnyQueensConflicts()) {
+            placePieces(board, row + 1, colsUsed);
+          } 
+          board.togglePiece(row,col);
+          delete colsUsed[col];
+        }
       }
     }
   };
 
   var newBoard = new Board({n: n});
-  placePieces(newBoard, 0);
+  placePieces(newBoard, 0, {});
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
