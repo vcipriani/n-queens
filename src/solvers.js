@@ -91,6 +91,7 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
 
+
   var solutionBoard;
   var solution;
   var placePieces = function(board, row) {
@@ -119,7 +120,7 @@ window.findNQueensSolution = function(n) {
 
   var newBoard = new Board({n: n});
   placePieces(newBoard, 0);
-  solution = solutionBoard ? solutionBoard.rows() : [];
+  solution = solutionBoard ? solutionBoard.rows() : (new Board({n: n})).rows();
 
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
