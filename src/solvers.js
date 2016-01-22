@@ -37,8 +37,8 @@ window.countNRooksSolutions = function(n) {
 window.findNQueensSolution = function(n, oldWay) {
   var solutionBoard;
   if(!oldWay) {
-        solutionBoard = findNQueensBitwise(n);
-        solutionBoard = solutionBoard.map(val => _.range(5).map((_, index) => {
+        solutionBoard = findNQueensBitwise(n) || _.range(n).map( val => n + 1);
+        solutionBoard = solutionBoard.map(val => _.range(n).map((_, index) => {
             if(index === val) {
                 return 1;
             }
@@ -189,5 +189,4 @@ window.findNQueensBitwise = function(n, left, right, col, soFar) {
       openSlots = openSlots ^ nextSlot;
     }
   }
-  return _.range(n).map( item => 0);
 };
