@@ -38,13 +38,14 @@ window.findNQueensSolution = function(n, oldWay) {
   var solutionBoard;
   if(!oldWay) {
         solutionBoard = findNQueensBitwise(n) || _.range(n).map( val => n + 1);
-        solutionBoard = solutionBoard.map(val => _.range(n).map((_, index) => {
-            if(index === val) {
-                return 1;
-            }
-            return 0;
-          })
-        );
+        solutionBoard = solutionBoard.map(val => 
+          _.range(n).map((_, index) => {
+              if(index === val) {
+                  return 1;
+              }
+              return 0;
+            })
+          );
 
         solutionBoard = new Board(solutionBoard);
   } else {
@@ -71,6 +72,16 @@ window.countNQueensSolutions = function(n, oldWay) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+
+
+
+
+
+
+
+
 
 var findFirstSolution = function(board, row, colsUsed, conflictFn) {
   if(row === board.rows().length - 1) {
@@ -136,6 +147,15 @@ var placePieces = function(board, row, colsUsed, conflictFn) {
     return sum;
   }
 };
+
+
+
+
+
+
+
+
+
 
 
 window.countNQueensBitwise = function(n) {
