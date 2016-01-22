@@ -25,13 +25,19 @@ window.findNRooksSolution = function(n) {
 
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {  
+window.countNRooksSolutions = function(n, oldWay) {  
+  if(!oldWay) {
+    return window.countNRooksBitwise(n);
+  }
+
+  if( n === 0 ) {
+    return 1;
+  }
   var newBoard = new Board({n: n});
   var solutionCount = placePieces(newBoard, 0, {}, newBoard.hasAnyRooksConflicts);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
-
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n, oldWay) {
@@ -72,8 +78,6 @@ window.countNQueensSolutions = function(n, oldWay) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
-
-
 
 
 
@@ -182,6 +186,27 @@ window.countNQueensBitwise = function(n) {
   return solutionCount;
 };
 
+window.countNRooksBitwise = function(n) {
+  var ones = (1 << n) - 1;
+  var solutionCount = 0;
+  var navigateRows = function(col) {
+    if(col === ones) {
+      solutionCount++;
+    } else {
+      var openSlots = ~(col) & ones;
+      while (openSlots !== 0 ) {
+        var nextSlot = (openSlots  & -openSlots);
+
+        var nextCol = nextSlot | col;
+        navigateRows(nextCol);
+        openSlots = openSlots ^ nextSlot;
+      }
+    }
+  };
+  navigateRows(0);
+  return solutionCount;
+};
+
 
 window.findNQueensBitwise = function(n, left, right, col, soFar) {
   var ones = (1 << n) - 1;
@@ -210,3 +235,6 @@ window.findNQueensBitwise = function(n, left, right, col, soFar) {
     }
   }
 };
+
+
+
